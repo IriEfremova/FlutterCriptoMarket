@@ -1,30 +1,34 @@
 import 'package:cripto_market/app/core/database/database.dart';
 import 'package:cripto_market/app/core/model/assets_pair.dart';
+import 'package:cripto_market/app/core/model/user_event.dart';
 import 'package:mobx/mobx.dart';
 
-class FavoritesStoreBase {
-  late final DatabaseInstance _databaseInstance;
+class FavoritesStore {
+  final DatabaseInstance _databaseInstance;
   final _favoritesList = ObservableList<AssetsPair>();
   late AssetsPair _currentAssetsPair;
 
-  FavoritesStoreBase(this._databaseInstance) {
-    _loadFavoritesList();
-  }
-
-  get currentAssetsPair => _currentAssetsPair;
   get favoritesList => _favoritesList;
+  get assetsPair => _currentAssetsPair;
 
-  void setCurrentAssetsPair(AssetsPair value) {
+  void choseAssetsPair(AssetsPair value) {
+    print('choseAssetsPair ${value.name} : ${value.pi_name}');
     _currentAssetsPair = value;
   }
 
+  FavoritesStore(this._databaseInstance) {
+    _loadFavoritesList();
+
+  }
+
   void _loadFavoritesList() async {
-    await _databaseInstance.initDB();
     print('_loadFavoritesList');
     final listFromDB = await _databaseInstance.getAllAssetsPairs();
-    print('_loadFavoritesList ${listFromDB.toString()}');
     _favoritesList.addAll(listFromDB);
+    _favoritesList.forEach((element) {print('_loadFavoritesList ${element.name} : ${element.pi_name}');});
+    _favoritesList.sort();
   }
+  
 
   @action
   void addToFavorites(AssetsPair assetsPair) {
@@ -38,5 +42,22 @@ class FavoritesStoreBase {
     _databaseInstance.deleteAssetsPair(assetsPair);
   }
 
+  @action
+  void updateFavoritesMinPrice(AssetsPair assetsPair) {
+    _databaseInstance.updateAssetsPairMinPrice(assetsPair);
+    _favoritesList.remove(assetsPair);
+    _favoritesList.add(assetsPair);
+    _favoritesList.sort();
+  }
+
+  @action
+  void updateFavoritesMaxPrice(AssetsPair assetsPair) {
+    _databaseInstance.updateAssetsPairMaxPrice(assetsPair);
+    _favoritesList.remove(assetsPair);
+    _favoritesList.add(assetsPair);
+    _favoritesList.sort();
+  }
+
   bool isFavorite(AssetsPair assetsPair) => _favoritesList.contains(assetsPair);
+
 }

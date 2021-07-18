@@ -14,17 +14,10 @@ class CustomColors {
   static const background = Color(0xff1A1927);*/
 
 
-  static const headline2 = Colors.yellow;
-  static const headline6 = Colors.green;
-  static const gradient_first = Colors.black;
-
+  static const headline1 = Colors.white;
+  static const border_side = Colors.white;
   static const black = Color(0xff15151C);
-  static const border = Colors.deepPurple;
-  static const filter_item_selected_color = Colors.lightGreenAccent;
-  static const filter_item_color = Colors.purpleAccent;
-
-  static const headline1 = Colors.red;
-  static const border_side = Colors.blue;
   static const background = Color(0xff1A1927);
   static const scaffold_background = Colors.black;
+
 }

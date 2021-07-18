@@ -23,7 +23,7 @@ final mainTextTheme = TextTheme(
     subtitle2: TextStyle(
         color: Colors.white, fontSize: 13, fontWeight: FontWeight.normal),
     caption: TextStyle(
-        color: Colors.white, fontSize: 10, fontWeight: FontWeight.normal),
+        color: Colors.white, fontSize: 20, fontWeight: FontWeight.normal),
     bodyText1: TextStyle(
         color: Colors.white, fontWeight: FontWeight.normal, fontSize: 15),
     bodyText2: TextStyle(

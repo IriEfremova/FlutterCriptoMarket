@@ -1,15 +1,14 @@
-import 'package:mobx/mobx.dart';
+import 'package:cripto_market/app/core/model/assets_pair.dart';
 
-class AssetsPairStore with Store {
+class AssetsPairStore {
   AssetsPairStore();
 
-  final _currentAssetsPair = Observable('');
+  late AssetsPair _assetsPair;
 
-  get currentAssetsPair => _currentAssetsPair.value;
+  get assetsPair => _assetsPair;
 
-  @action
-  void setCurrentAssetsPair(String value) {
-    _currentAssetsPair.value = value;
+  void choseAssetsPair(AssetsPair value) {
+    print('choseAssetsPair ${value.name}');
+    _assetsPair = value;
   }
-
 }

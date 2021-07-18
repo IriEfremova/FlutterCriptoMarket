@@ -1,31 +1,24 @@
-import 'package:json_annotation/json_annotation.dart';
-
-part 'assets_info.g.dart';
-
-/*
-@JsonSerializable()
-class Assets {
-  late String aclass;
-  late String altname;
-  late int decimals;
-  late int display_decimals;
-
-  Assets(this.aclass, this.altname, this.decimals, this.display_decimals);
-
-  factory Assets.fromJson(Map<String, dynamic> json) =>
-      _$AssetsFromJson(json);
-}
-
- */
-
-@JsonSerializable()
 class AssetsInfo {
-  final Map<String, dynamic> data;
+/*  double time;
+  String feed;
+  String product_id;
+  double bid;
+  double ask;
+  double bid_size;
+  double ask_size;
+  double volume;
+  double dtm;
+  String leverage;
+  double index;
+  double premium;
+  double last;
+  double change;
+  */
+  double price = -1;
+  //Стоп-цены для мониторинга, минимальная и максимальная граница
+  double minPrice = -1;
+  double maxPrice = -1;
 
-  AssetsInfo(this.data);
-
-  factory AssetsInfo.fromJson(dynamic json) =>
-     _$AssetsInfoFromJson(json);
 
 }
 
