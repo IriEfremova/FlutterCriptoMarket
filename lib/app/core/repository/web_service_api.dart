@@ -21,7 +21,6 @@ class WebServiceAPI {
 
   Future<List<AssetsPair>> fetchTradePairsPrice() async {
     var result = <AssetsPair>[];
-    print('fetchTradePairsPrice 000');
     var pairs = Map<String, String>();
     var response =
         await http.get(Uri.parse('https://api.kraken.com/0/public/AssetPairs'));
@@ -29,7 +28,6 @@ class WebServiceAPI {
     if (response.statusCode == 200) {
       pairs =
           WebSocketResponse().getAssetsInfo(convert.jsonDecode(response.body));
-      print('fetchTradePairsPrice = ${pairs.length}');
     } else {
       throw HttpException('Request failed with status: ${response.statusCode}');
     }
@@ -43,7 +41,6 @@ class WebServiceAPI {
         Uri.parse('https://api.kraken.com/0/public/Ticker?pair=$strPairs'));
 
     if (response.statusCode == 200) {
-      print(response.body);
       final newMap = WebSocketResponse()
           .getAssetsPairsPrice(convert.jsonDecode(response.body));
 

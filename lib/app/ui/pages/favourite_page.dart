@@ -13,7 +13,6 @@ class FavouritePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("build home page");
     return LayoutBuilder(builder: (contextL, constraints) {
       return Container(
         child: Column(

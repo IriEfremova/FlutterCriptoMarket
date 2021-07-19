@@ -15,22 +15,15 @@ import 'app/ui/style/theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Меняем writePolicy, чтобы Observable могли быть изменены только внутри экшенов
   mainContext.config = ReactiveConfig.main.clone(
     writePolicy: ReactiveWritePolicy.always,
   );
-  print("runApp");
   runApp(App());
-
-
 }
 
-
-  class App extends StatelessWidget {
+class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print("build app page");
     return MultiProvider(
       providers: [
         Provider(
@@ -43,18 +36,23 @@ Future<void> main() async {
         ),
         Provider(
           create: (context) => DatabaseInstance(),
+          dispose: (BuildContext context, DatabaseInstance value) =>
+              value.closeDatabase(),
         ),
         Provider(
           create: (context) => FavoritesStore(context.read<DatabaseInstance>()),
         ),
         Provider(
-          create: (context) => UserEventsStore(context.read<DatabaseInstance>()),
+          create: (context) =>
+              UserEventsStore(context.read<DatabaseInstance>()),
         ),
         Provider(
           create: (context) => PageStore(),
         ),
         Provider(
           create: (context) => RssStore(),
+          dispose: (BuildContext context, RssStore value) =>
+              value.disposeRssNews(),
         ),
         Provider(
           create: (context) => MarketListStore(context.read<WebServiceAPI>()),

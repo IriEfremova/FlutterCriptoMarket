@@ -74,7 +74,6 @@ class DatabaseInstance {
   //Записываем данные по валюте в БД
   insertAssetsPairInfo(AssetsPair assetsPair) async {
     final db = await database;
-    print('insertAssetsPairInfo ${assetsPair.name} : ${assetsPair.piName}');
     await db.transaction((txn) async {
       int id2 = await txn.rawInsert(
           'INSERT INTO Assetpairs(name, piname, min_price, max_price) VALUES(?, ?, ?, ?)',

@@ -32,7 +32,8 @@ class PairPage extends StatelessWidget {
                     TextButton(
                       child: const Text('Close'),
                       onPressed: () {
-                        webChannel.clearSubscribe(favouriteStore.assetsPair.name);
+                        webChannel
+                            .clearSubscribe(favouriteStore.assetsPair.name);
                         Navigator.of(context).pop();
                       },
                     ),
@@ -62,10 +63,7 @@ class BaseWidget extends StatelessWidget {
                   padding: EdgeInsets.all(3),
                   child: Text(
                     'Currency: ${favouriteStore.assetsPair.name}',
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .bodyText1,
+                    style: Theme.of(context).textTheme.bodyText1,
                   ))),
           Expanded(
               flex: 3,
@@ -81,10 +79,7 @@ class BaseWidget extends StatelessWidget {
                                 padding: EdgeInsets.all(5),
                                 child: Text(
                                   'Minimum price: ',
-                                  style: Theme
-                                      .of(context)
-                                      .textTheme
-                                      .bodyText1,
+                                  style: Theme.of(context).textTheme.bodyText1,
                                 )),
                           ),
                           Expanded(
@@ -92,10 +87,8 @@ class BaseWidget extends StatelessWidget {
                                   padding: EdgeInsets.all(5),
                                   child: Text(
                                     'Maximum price: ',
-                                    style: Theme
-                                        .of(context)
-                                        .textTheme
-                                        .bodyText1,
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1,
                                   ))),
                         ],
                       ),
@@ -105,10 +98,14 @@ class BaseWidget extends StatelessWidget {
                         children: [
                           Flexible(
                             child: TextFormField(
-                              initialValue: favouriteStore.assetsPair.minPrice == -1 ? '' : favouriteStore.assetsPair.minPrice.toString(),
+                              initialValue:
+                                  favouriteStore.assetsPair.minPrice == -1
+                                      ? ''
+                                      : favouriteStore.assetsPair.minPrice
+                                          .toString(),
                               keyboardType: TextInputType.number,
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 16),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
                               cursorColor: Colors.white,
                               decoration: InputDecoration(
                                 fillColor: CustomColors.background,
@@ -117,10 +114,13 @@ class BaseWidget extends StatelessWidget {
                                 hintStyle: TextStyle(color: Colors.white),
                               ),
                               onFieldSubmitted: (String value) {
-                                print('onSubmitted');
                                 if (value.isNotEmpty) {
-                                  userStore.addToUserEvents(UserEvent(favouriteStore.assetsPair.name, userStore.currentTimeInSeconds(), 'Update Minimum Price'));
-                                  favouriteStore.assetsPair.updateMinPrice(double.tryParse(value));
+                                  userStore.addToUserEvents(UserEvent(
+                                      favouriteStore.assetsPair.name,
+                                      userStore.currentTimeInSeconds(),
+                                      'Update Minimum Price'));
+                                  favouriteStore.assetsPair
+                                      .updateMinPrice(double.tryParse(value));
                                   favouriteStore.updateFavoritesMinPrice(
                                       favouriteStore.assetsPair);
                                 }
@@ -129,10 +129,14 @@ class BaseWidget extends StatelessWidget {
                           ),
                           Flexible(
                             child: TextFormField(
-                              initialValue: favouriteStore.assetsPair.maxPrice == -1 ? '' : favouriteStore.assetsPair.maxPrice.toString(),
+                              initialValue:
+                                  favouriteStore.assetsPair.maxPrice == -1
+                                      ? ''
+                                      : favouriteStore.assetsPair.maxPrice
+                                          .toString(),
                               keyboardType: TextInputType.number,
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 16),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
                               cursorColor: Colors.white,
                               decoration: InputDecoration(
                                 fillColor: CustomColors.background,
@@ -142,8 +146,12 @@ class BaseWidget extends StatelessWidget {
                               ),
                               onFieldSubmitted: (String value) {
                                 if (value.isNotEmpty) {
-                                  userStore.addToUserEvents(UserEvent(favouriteStore.assetsPair.name, userStore.currentTimeInSeconds(), 'Update Maximum Price'));
-                                  favouriteStore.assetsPair.updateMinPrice(double.tryParse(value));
+                                  userStore.addToUserEvents(UserEvent(
+                                      favouriteStore.assetsPair.name,
+                                      userStore.currentTimeInSeconds(),
+                                      'Update Maximum Price'));
+                                  favouriteStore.assetsPair
+                                      .updateMinPrice(double.tryParse(value));
                                   favouriteStore.updateFavoritesMaxPrice(
                                       favouriteStore.assetsPair);
                                 }
@@ -176,36 +184,31 @@ class AnimationWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final favouriteStore = Provider.of<FavoritesStore>(context);
     final webChannel = Provider.of<WebChannelAPI>(context);
-    print('build page = ${favouriteStore.assetsPair.name}');
     webChannel.subscribeTicker(favouriteStore.assetsPair.piName);
     return StreamBuilder<List<double>>(
       stream: webChannel.getDataStream,
       builder: (context, AsyncSnapshot<List<double>> snapshot) {
         if (snapshot.hasData) {
-          print('stream : ${snapshot.data.toString()}');
           return Center(
               child: Container(
-                color: CustomColors.black,
-                width: widthWidget,
-                height: 300,
-                padding: EdgeInsets.all(20),
-                child: CustomPaint(
-                  painter: AnimationWidgetPainter(
-                    snapshot.data!,
-                    color,
-                  ),
-                ),
-              ));
+            color: CustomColors.black,
+            width: widthWidget,
+            height: 300,
+            padding: EdgeInsets.all(20),
+            child: CustomPaint(
+              painter: AnimationWidgetPainter(
+                snapshot.data!,
+                color,
+              ),
+            ),
+          ));
         }
         if (snapshot.hasError) {
           return Center(
             child: Text(
               "Unable to subscribe to currency " +
                   favouriteStore.assetsPair.name,
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .bodyText1,
+              style: Theme.of(context).textTheme.bodyText1,
             ),
           );
         }
@@ -221,20 +224,16 @@ class AnimationWidgetPainter extends CustomPainter {
   final List<double> _listValue;
   final Color _color;
 
-  AnimationWidgetPainter(this._listValue, this._color) {
-    print('animation : ${_listValue.toString()}');
-  }
+  AnimationWidgetPainter(this._listValue, this._color);
 
   @override
   void paint(Canvas canvas, Size size) {
-    print('paint!!!! ${size.toString()}');
     final paint = Paint()
       ..color = _color
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
 
-    final path = Path()
-      ..moveTo(-size.width / 2, 0);
+    final path = Path()..moveTo(-size.width / 2, 0);
     final step = size.width / 100;
     double index = 0;
     final tmp = _listValue.getRange(

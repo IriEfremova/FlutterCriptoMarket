@@ -1,6 +1,7 @@
 import 'package:cripto_market/app/core/database/database.dart';
 import 'package:cripto_market/app/core/model/user_event.dart';
 import 'package:mobx/mobx.dart';
+
 part 'userevents_store.g.dart';
 
 class UserEventsStore = _UserEventsStoreBase with _$UserEventsStore;
@@ -12,7 +13,10 @@ abstract class _UserEventsStoreBase with Store {
   List<String> get userEventsList {
     List<String> list = <String>[];
 
-    _eventsList.forEach((element) { list.add('${ DateTime.fromMillisecondsSinceEpoch(element.dateTime)}: ${element.event}. ${element.nameAssets}');});
+    _eventsList.forEach((element) {
+      list.add(
+          '${DateTime.fromMillisecondsSinceEpoch(element.dateTime)}: ${element.event}. ${element.nameAssets}');
+    });
     return list;
   }
 
@@ -26,7 +30,6 @@ abstract class _UserEventsStoreBase with Store {
   }
 
   void _loadEventsList() async {
-    print('_loadEventsList');
     final listFromDB = await _databaseInstance.getAllUserEvents();
     _eventsList.addAll(listFromDB);
   }
@@ -42,5 +45,4 @@ abstract class _UserEventsStoreBase with Store {
     _eventsList.clear();
     _databaseInstance.clearUserEvents();
   }
-
 }

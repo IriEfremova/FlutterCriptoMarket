@@ -24,23 +24,12 @@ class _MainPageState extends State<MainPage> {
   ];
 
   @override
-  void dispose() {
-    print('dispose widget');
-    super.dispose();
-
-    Provider.of<WebChannelAPI>(context).disposeSocket();
-    Provider.of<DatabaseInstance>(context).closeDatabase();
-    Provider.of<RssStore>(context).disposeRssNews();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    print("build main page");
     final pageStore = Provider.of<PageStore>(context);
-   // final webChannel = Provider.of<WebChannelAPI>(context);
+    // final webChannel = Provider.of<WebChannelAPI>(context);
     //final favouriteStore = Provider.of<FavoritesStore>(context);
     return Scaffold(
-        resizeToAvoidBottomInset : false,
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           leading: Image.asset('assets/images/bitkoin.png'),
           title: Text('Cripto Market'),

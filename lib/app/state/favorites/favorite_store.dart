@@ -11,7 +11,6 @@ class FavoritesStore {
   get assetsPair => _currentAssetsPair;
 
   void choseAssetsPair(AssetsPair value) {
-    print('choseAssetsPair ${value.name} : ${value.piName}');
     _currentAssetsPair = value;
   }
 
@@ -21,10 +20,8 @@ class FavoritesStore {
   }
 
   void _loadFavoritesList() async {
-    print('_loadFavoritesList');
     final listFromDB = await _databaseInstance.getAllAssetsPairs();
     _favoritesList.addAll(listFromDB);
-    _favoritesList.forEach((element) {print('_loadFavoritesList ${element.name} : ${element.piName}');});
     _favoritesList.sort();
   }
   

@@ -2,7 +2,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'assets_ticker.g.dart';
 
-
 @JsonSerializable()
 class AssetsTicker {
   List<String> a;

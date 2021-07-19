@@ -96,12 +96,10 @@ class ListWidget extends StatelessWidget {
     final userStore = Provider.of<UserEventsStore>(context);
     final marketStore = Provider.of<MarketListStore>(context);
     final favoritesStore = Provider.of<FavoritesStore>(context);
-  //  return Observer(builder: (context) {
       return StreamBuilder<List<AssetsPair>>(
         stream: marketStore.filteredList,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            print('future ${snapshot.data.toString()}');
             return ListView.builder(
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
@@ -153,6 +151,5 @@ class ListWidget extends StatelessWidget {
           );
         },
       );
-   // },    );
   }
 }
