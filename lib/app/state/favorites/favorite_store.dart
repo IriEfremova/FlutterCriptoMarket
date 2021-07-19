@@ -1,6 +1,5 @@
 import 'package:cripto_market/app/core/database/database.dart';
 import 'package:cripto_market/app/core/model/assets_pair.dart';
-import 'package:cripto_market/app/core/model/user_event.dart';
 import 'package:mobx/mobx.dart';
 
 class FavoritesStore {
@@ -12,7 +11,7 @@ class FavoritesStore {
   get assetsPair => _currentAssetsPair;
 
   void choseAssetsPair(AssetsPair value) {
-    print('choseAssetsPair ${value.name} : ${value.pi_name}');
+    print('choseAssetsPair ${value.name} : ${value.piName}');
     _currentAssetsPair = value;
   }
 
@@ -25,7 +24,7 @@ class FavoritesStore {
     print('_loadFavoritesList');
     final listFromDB = await _databaseInstance.getAllAssetsPairs();
     _favoritesList.addAll(listFromDB);
-    _favoritesList.forEach((element) {print('_loadFavoritesList ${element.name} : ${element.pi_name}');});
+    _favoritesList.forEach((element) {print('_loadFavoritesList ${element.name} : ${element.piName}');});
     _favoritesList.sort();
   }
   

@@ -1,11 +1,5 @@
-import 'dart:async';
-import 'dart:isolate';
-
 import 'package:cripto_market/app/core/database/database.dart';
-import 'package:cripto_market/app/core/repository/rss_servise.dart';
 import 'package:cripto_market/app/core/repository/web_channel_api.dart';
-import 'package:cripto_market/app/core/repository/web_service_api.dart';
-import 'package:cripto_market/app/state/favorites/favorite_store.dart';
 import 'package:cripto_market/app/state/page/page_store.dart';
 import 'package:cripto_market/app/state/rssnews/rss_store.dart';
 import 'package:cripto_market/app/ui/pages/favourite_page.dart';
@@ -14,7 +8,6 @@ import 'package:cripto_market/app/ui/pages/market_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
-
 
 class MainPage extends StatefulWidget {
   @override

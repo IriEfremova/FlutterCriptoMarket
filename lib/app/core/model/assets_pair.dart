@@ -6,13 +6,13 @@ class AssetsPair implements Comparable<AssetsPair>{
   String realPrice = '';
   double minPrice = -1;
   double maxPrice = -1;
-  String pi_name = '';
+  String piName = '';
 
   AssetsPair(this.name);
 
-  AssetsPair.fromServer(this.name, this.pi_name);
+  AssetsPair.fromServer(this.name, this.piName);
 
-  AssetsPair.fromDB(this.name, this.pi_name, this.minPrice, this.maxPrice);
+  AssetsPair.fromDB(this.name, this.piName, this.minPrice, this.maxPrice);
 
   factory AssetsPair.fromMap(Map<String, dynamic> map) => new AssetsPair.fromDB(
         map["name"],
@@ -31,9 +31,11 @@ class AssetsPair implements Comparable<AssetsPair>{
 
   @override
   bool operator ==(Object other) {
-    if (other.runtimeType != AssetsPair) return false;
-    AssetsPair tmp = other as AssetsPair;
-    return name == tmp.name;
+    if (identical(this, other)) {
+      return true;
+    }
+    return other is AssetsPair &&
+        this.name == other.name;
   }
 
   @override

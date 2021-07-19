@@ -12,7 +12,7 @@ class WebSocketResponse {
 
   Map<String, String> getAssetsPairsPrice(Map<String, dynamic> json) {
     Map<String, dynamic> result = json['result'];
-    print('getAssetsPairsPrice = ${result}');
+    print('getAssetsPairsPrice = $result');
     var newMap = Map<String, String>();
     for (int i = 0; i < result.length; i++) {
       AssetsTicker ticker = AssetsTicker.fromJson(result.values.elementAt(i));
@@ -22,7 +22,7 @@ class WebSocketResponse {
       if (key.contains('XBTUSD')) print('key $key');
     });
 
-    print('getAssetsPairsPrice = ${newMap}');
+    print('getAssetsPairsPrice = $newMap');
     return newMap;
   }
 

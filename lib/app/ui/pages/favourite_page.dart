@@ -1,6 +1,4 @@
-import 'package:cripto_market/app/state/assetspair/assetspair_store.dart';
 import 'package:cripto_market/app/state/favorites/favorite_store.dart';
-import 'package:cripto_market/app/state/userevents/userevents_store.dart';
 import 'package:cripto_market/app/ui/pages/pair_page.dart';
 import 'package:cripto_market/app/ui/style/colors.dart';
 import 'package:flutter/cupertino.dart';

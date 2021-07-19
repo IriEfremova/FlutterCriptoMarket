@@ -25,7 +25,7 @@ class MarketPage extends StatelessWidget {
               ),
               Expanded(
                 flex: 10,
-                child: ListWidget(),
+                child:   ListWidget(),
               ),
             ]));
   }
@@ -96,9 +96,9 @@ class ListWidget extends StatelessWidget {
     final userStore = Provider.of<UserEventsStore>(context);
     final marketStore = Provider.of<MarketListStore>(context);
     final favoritesStore = Provider.of<FavoritesStore>(context);
-    return Observer(builder: (context) {
-      return FutureBuilder<List<AssetsPair>>(
-        future: marketStore.filteredList,
+  //  return Observer(builder: (context) {
+      return StreamBuilder<List<AssetsPair>>(
+        stream: marketStore.filteredList,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             print('future ${snapshot.data.toString()}');
@@ -153,6 +153,6 @@ class ListWidget extends StatelessWidget {
           );
         },
       );
-    });
+   // },    );
   }
 }

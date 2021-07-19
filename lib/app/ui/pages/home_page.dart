@@ -1,5 +1,3 @@
-import 'package:cripto_market/app/core/repository/websocket_response.dart';
-import 'package:cripto_market/app/core/repository/web_channel_api.dart';
 import 'package:cripto_market/app/core/repository/web_service_api.dart';
 import 'package:cripto_market/app/state/rssnews/rss_store.dart';
 import 'package:cripto_market/app/ui/pages/events_widget.dart';
@@ -7,10 +5,7 @@ import 'package:cripto_market/app/ui/style/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mobx/mobx.dart';
-import 'dart:convert' as convert;
 import 'package:provider/provider.dart';
-import 'package:cripto_market/app/state/favorites/favorite_store.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -34,7 +29,6 @@ class HomePage extends StatelessWidget {
 class StatusWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    String time = '';
     final webService = Provider.of<WebServiceAPI>(context);
     return Container(
       height: 80,

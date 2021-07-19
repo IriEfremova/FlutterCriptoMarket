@@ -17,7 +17,7 @@ class WebChannelAPI {
 
   Stream<List<double>> get getDataStream => _streamController.stream;
 
-  WebChannelAPI._privateConstructor() {}
+  WebChannelAPI._privateConstructor();
 
   static final WebChannelAPI _instance = WebChannelAPI._privateConstructor();
 
@@ -32,7 +32,7 @@ class WebChannelAPI {
 
   Future<WebSocketChannel> reconnect() async {
     print("reconnect");
-    _channel = await WebSocketChannel.connect(Uri.parse(_uriConnect));
+    _channel = WebSocketChannel.connect(Uri.parse(_uriConnect));
     _channel.stream.listen((streamData) {
       print('STREAM LISTEN ${streamData.toString()}');
       final request = convert.jsonDecode(streamData.toString());
@@ -56,10 +56,10 @@ class WebChannelAPI {
   }
 
   void subscribeTicker(String assetPairs) async {
-    print("subscribeTicker...${assetPairs}");
+    print("subscribeTicker $assetPairs");
     if (_subscriptionType != SubscriptionType.TICKER) {
       //_clearSubscribes();
-      final channel = await webChannel;;
+      final channel = await webChannel;
 
      String tmp = convert.jsonEncode({
         "event": "subscribe",

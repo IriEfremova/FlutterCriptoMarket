@@ -1,15 +1,11 @@
 import 'package:cripto_market/app/core/model/user_event.dart';
 import 'package:cripto_market/app/core/repository/web_channel_api.dart';
-import 'package:cripto_market/app/core/repository/websocket_response.dart';
-import 'package:cripto_market/app/state/assetspair/assetspair_store.dart';
 import 'package:cripto_market/app/state/favorites/favorite_store.dart';
 import 'package:cripto_market/app/state/userevents/userevents_store.dart';
 import 'package:cripto_market/app/ui/style/colors.dart';
 import 'package:cripto_market/app/ui/style/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
 
 class PairPage extends StatelessWidget {
   const PairPage({Key? key}) : super(key: key);
@@ -181,7 +177,7 @@ class AnimationWidget extends StatelessWidget {
     final favouriteStore = Provider.of<FavoritesStore>(context);
     final webChannel = Provider.of<WebChannelAPI>(context);
     print('build page = ${favouriteStore.assetsPair.name}');
-    webChannel.subscribeTicker(favouriteStore.assetsPair.pi_name);
+    webChannel.subscribeTicker(favouriteStore.assetsPair.piName);
     return StreamBuilder<List<double>>(
       stream: webChannel.getDataStream,
       builder: (context, AsyncSnapshot<List<double>> snapshot) {

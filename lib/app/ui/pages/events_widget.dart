@@ -1,4 +1,3 @@
-import 'package:cripto_market/app/state/favorites/favorite_store.dart';
 import 'package:cripto_market/app/state/userevents/userevents_store.dart';
 import 'package:cripto_market/app/ui/style/colors.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +5,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 
 class UserEventWidget extends StatelessWidget {
-  List<String> listEvent = <String>[];
+  final List<String> listEvent = <String>[];
 
   @override
   Widget build(BuildContext context) {

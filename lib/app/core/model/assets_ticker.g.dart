@@ -20,15 +20,3 @@ AssetsTicker _$AssetsTickerFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$AssetsTickerToJson(AssetsTicker instance) =>
-    <String, dynamic>{
-      'a': instance.a,
-      'b': instance.b,
-      'c': instance.c,
-      'v': instance.v,
-      'p': instance.p,
-      't': instance.t,
-      'l': instance.l,
-      'h': instance.h,
-      'o': instance.o,
-    };
