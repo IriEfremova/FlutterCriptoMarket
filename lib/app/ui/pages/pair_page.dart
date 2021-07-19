@@ -151,7 +151,7 @@ class BaseWidget extends StatelessWidget {
                                       userStore.currentTimeInSeconds(),
                                       'Update Maximum Price'));
                                   favouriteStore.assetsPair
-                                      .updateMinPrice(double.tryParse(value));
+                                      .updateMaxPrice(double.tryParse(value));
                                   favouriteStore.updateFavoritesMaxPrice(
                                       favouriteStore.assetsPair);
                                 }
@@ -194,12 +194,13 @@ class AnimationWidget extends StatelessWidget {
             color: CustomColors.black,
             width: widthWidget,
             height: 300,
-            padding: EdgeInsets.all(20),
+            //padding: EdgeInsets.all(20),
             child: CustomPaint(
               painter: AnimationWidgetPainter(
-                snapshot.data!,
-                color,
-              ),
+                  snapshot.data!,
+                  color,
+                  favouriteStore.assetsPair.minPrice,
+                  favouriteStore.assetsPair.maxPrice),
             ),
           ));
         }
@@ -222,9 +223,13 @@ class AnimationWidget extends StatelessWidget {
 
 class AnimationWidgetPainter extends CustomPainter {
   final List<double> _listValue;
+  final double _minPrice;
+
+  final double _maxPrice;
   final Color _color;
 
-  AnimationWidgetPainter(this._listValue, this._color);
+  AnimationWidgetPainter(
+      this._listValue, this._color, this._minPrice, this._maxPrice);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -233,13 +238,27 @@ class AnimationWidgetPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
 
+    final paintBorder = Paint()
+      ..color = Colors.purpleAccent
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2;
+
     final path = Path()..moveTo(-size.width / 2, 0);
     final step = size.width / 100;
     double index = 0;
+
+    final min = (_minPrice == -1) ? _listValue.first - 10 : _minPrice;
+    final max = (_maxPrice == -1 || _maxPrice <= _listValue.first) ? _listValue.first + 10 : _maxPrice;
+    print('paint11 $min : $max');
+
     final tmp = _listValue.getRange(
         _listValue.length < 80 ? 0 : _listValue.length - 80, _listValue.length);
     List<double> list = <double>[];
-    tmp.forEach((element) => list.add(element - _listValue.first));
+    // tmp.forEach((element) => list.add(element - _listValue.first));
+    tmp.forEach(
+        (element) => list.add(20 + (240 * (element - min)) / (max - min)));
+
+    print('paint ${list.toString()}');
 
     index = 0;
     list.forEach((element) {
@@ -247,7 +266,12 @@ class AnimationWidgetPainter extends CustomPainter {
       index += step;
     });
 
+    //final stepVert = value  / (_maxPrice - _minPrice) / 240;
     canvas.drawPath(path, paint);
+    canvas.drawLine(
+        Offset(-size.width / 2, 20), Offset(size.width, 20), paintBorder);
+    canvas.drawLine(
+        Offset(-size.width / 2, 260), Offset(size.width, 260), paintBorder);
   }
 
   @override
