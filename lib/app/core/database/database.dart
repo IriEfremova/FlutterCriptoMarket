@@ -16,13 +16,13 @@ class DatabaseInstance {
   }
 
   Future<void> initDB() async {
-    print('initDB');
     var databasesPath = await getDatabasesPath();
     var path = join(databasesPath, 'CriptoDB.db');
     _database = await openDatabase(path, version: 1,
         onCreate: (Database db, int version) async {
       await db.execute(
-          'CREATE TABLE Assetpairs (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, piname TEXT, min_price REAL, max_price REAL);'
+          'CREATE TABLE Assetpairs (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, piname TEXT, min_price REAL, max_price REAL)');
+      await db.execute(
           'CREATE TABLE Userevents (id INTEGER PRIMARY KEY AUTOINCREMENT, nameassets TEXT, datetime INTEGER, event TEXT)');
     });
   }

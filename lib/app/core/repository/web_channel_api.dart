@@ -30,12 +30,15 @@ class WebChannelAPI {
   Future<WebSocketChannel> reconnect() async {
     _channel = WebSocketChannel.connect(Uri.parse(_uriConnect));
     _channel.stream.listen((streamData) {
+      print('STREAm LISTEn: ${streamData.toString()}');
       final request = convert.jsonDecode(streamData.toString());
       if (request.containsKey('event') && request['event'].contains('alert')) {
         _streamController.addError('Unable to subscribe to currency');
       } else {
         Map<String, dynamic> json = convert.jsonDecode(streamData.toString());
-        if (json.containsKey('ask')) _streamList.add(json['ask']);
+        if (json.containsKey('ask')) {
+          _streamList.add(json['ask']);
+        }
         _streamController.add(_streamList);
       }
       _isInitialize = true;
@@ -60,10 +63,10 @@ class WebChannelAPI {
   }
 
   void clearSubscribe(String assetPairs) {
+    print('clearSubscribe');
     _channel.sink.add(convert.jsonEncode({
       'event': 'unsubscribe',
       'feed': 'ticker',
-      'product_ids': [assetPairs]
     }));
   }
 

@@ -13,33 +13,52 @@ class PairPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final webChannel = Provider.of<WebChannelAPI>(context);
     final favouriteStore = Provider.of<FavoritesStore>(context);
-    return MaterialApp(
-        theme: mainThemeData,
-        home: Scaffold(
+    webChannel.subscribeTicker(favouriteStore.assetsPair.piName);
+    return Scaffold(
             resizeToAvoidBottomInset: false,
             appBar: AppBar(
               leading: Image.asset('assets/images/bitkoin.png'),
               title: Text('Cripto Market'),
             ),
             body: LayoutBuilder(builder: (contextL, constraints) {
-              return Container(
-                child: Column(
-                  children: <Widget>[
-                    BaseWidget(),
-                    AnimationWidget(
-                        color: Colors.blue, widthWidget: constraints.maxWidth),
-                    TextButton(
-                      onPressed: () {
-                        webChannel
-                            .clearSubscribe(favouriteStore.assetsPair.name);
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text('Close'),
-                    ),
-                  ],
-                ),
+              return StreamBuilder<List<double>>(
+                stream: webChannel.getDataStream,
+                builder: (context, AsyncSnapshot<List<double>> snapshot) {
+                  if (snapshot.hasData) {
+                    return Container(
+                      child: Column(
+                        children: <Widget>[
+                          BaseWidget(snapshot.data!.isEmpty ? 0 : snapshot.data!.last),
+                          AnimationWidget(
+                              dataList: snapshot.data!, color: Colors.blue, widthWidget: constraints.maxWidth),
+                          TextButton(
+                            onPressed: () {
+                              webChannel
+                                  .clearSubscribe(favouriteStore.assetsPair.name);
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('Close'),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text(
+                        'Unable to subscribe to currency ' +
+                            favouriteStore.assetsPair.name,
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                    );
+                  }
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
               );
-            })));
+
+            }));
   }
 }
 

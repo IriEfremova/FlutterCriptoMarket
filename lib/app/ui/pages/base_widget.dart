@@ -6,6 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class BaseWidget extends StatelessWidget {
+  final double price;
+
+  const BaseWidget(this.price, {Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final favouriteStore = Provider.of<FavoritesStore>(context);
@@ -14,7 +18,7 @@ class BaseWidget extends StatelessWidget {
       padding: EdgeInsets.all(10),
       margin: EdgeInsets.all(6),
       color: CustomColors.black,
-      height: 100,
+      height: 150,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -24,6 +28,14 @@ class BaseWidget extends StatelessWidget {
                   padding: EdgeInsets.all(3),
                   child: Text(
                     'Currency: ${favouriteStore.assetsPair.name}',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ))),
+          Expanded(
+              flex: 1,
+              child: Container(
+                  padding: EdgeInsets.all(3),
+                  child: Text(
+                    'Current price: $price',
                     style: Theme.of(context).textTheme.bodyText1,
                   ))),
           Expanded(

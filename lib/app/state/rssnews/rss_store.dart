@@ -11,7 +11,6 @@ import 'package:xml/xml.dart';
 class RssMessage{
   final String title;
   final String description;
-
   RssMessage(this.title, this.description);
 }
 
@@ -19,12 +18,10 @@ class RssStore {
   http.Client client;
   late Isolate _rssIsolate;
   late ReceivePort _isolateReceivePort;
-
   final _rssNewsList = ObservableList<RssMessage>();
   late Timer _timer;
 
   ObservableList<RssMessage> get rssNewsList => _rssNewsList;
-
   RssStore(this.client) {
     spawnRssIsolate();
     _timer = Timer.periodic(Duration(minutes: 1), (t) {
@@ -32,24 +29,8 @@ class RssStore {
     });
   }
 
-  static void fetchRss(SendPort sendPort) async{
-    var result = <RssMessage>[];
-    var response =
-    await http.get(Uri.parse('https://cryptocurrency.tech/feed/'));
-
-    if (response.statusCode == 200) {
-      final document = XmlDocument.parse(response.body.toString());
-      final titles = document.findAllElements('item');
-      titles.map((node) => RssMessage(node.findElements('title').first.text, node.findElements('description').first.text)).forEach(result.add);
-    } else {
-      throw HttpException('Request failed with status: ${response.statusCode}');
-    }
-    sendPort.send(result);
-  }
-
   void spawnRssIsolate() async {
     _isolateReceivePort = ReceivePort();
-
     try {
       _rssIsolate = await Isolate.spawn(fetchRss, _isolateReceivePort.sendPort);
 
@@ -67,5 +48,20 @@ class RssStore {
 
   void disposeRssNews() {
     _timer.cancel();
+  }
+
+  static void fetchRss(SendPort sendPort) async{
+    var result = <RssMessage>[];
+    var response =
+    await http.get(Uri.parse('https://cryptocurrency.tech/feed/'));
+
+    if (response.statusCode == 200) {
+      final document = XmlDocument.parse(response.body.toString());
+      final titles = document.findAllElements('item');
+      titles.map((node) => RssMessage(node.findElements('title').first.text, node.findElements('description').first.text)).forEach(result.add);
+    } else {
+      throw HttpException('Request failed with status: ${response.statusCode}');
+    }
+    sendPort.send(result);
   }
 }

@@ -7,50 +7,31 @@ import 'package:provider/provider.dart';
 class AnimationWidget extends StatelessWidget {
   final Color color;
   final double widthWidget;
+  final List<double> dataList;
 
   AnimationWidget({
     Key? key,
     required this.color,
     required this.widthWidget,
+    required this.dataList,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final favouriteStore = Provider.of<FavoritesStore>(context);
-    final webChannel = Provider.of<WebChannelAPI>(context);
-    webChannel.subscribeTicker(favouriteStore.assetsPair.piName);
-    return StreamBuilder<List<double>>(
-      stream: webChannel.getDataStream,
-      builder: (context, AsyncSnapshot<List<double>> snapshot) {
-        if (snapshot.hasData) {
-          return Center(
-              child: Container(
-            color: CustomColors.black,
-            width: widthWidget,
-            height: 300,
-            child: CustomPaint(
-              painter: AnimationWidgetPainter(
-                  snapshot.data!,
-                  color,
-                  favouriteStore.assetsPair.minPrice,
-                  favouriteStore.assetsPair.maxPrice),
-            ),
-          ));
-        }
-        if (snapshot.hasError) {
-          return Center(
-            child: Text(
-              'Unable to subscribe to currency ' +
-                  favouriteStore.assetsPair.name,
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-          );
-        }
-        return Center(
-          child: CircularProgressIndicator(),
-        );
-      },
-    );
+    return Center(
+        child: Container(
+      color: CustomColors.black,
+      width: widthWidget,
+      height: 300,
+      child: CustomPaint(
+        painter: AnimationWidgetPainter(
+            dataList,
+            color,
+            favouriteStore.assetsPair.minPrice,
+            favouriteStore.assetsPair.maxPrice),
+      ),
+    ));
   }
 }
 
@@ -86,7 +67,7 @@ class AnimationWidgetPainter extends CustomPainter {
       final paint = Paint()
         ..color = _color
         ..style = PaintingStyle.stroke
-        ..strokeWidth = 2;
+        ..strokeWidth = 1;
 
       final min = (_minPrice == -1) ? minListValue : _minPrice;
       final max = (_maxPrice == -1) ? maxListValue : _maxPrice;

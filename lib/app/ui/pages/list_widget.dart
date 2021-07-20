@@ -51,7 +51,6 @@ class ListWidget extends StatelessWidget {
                               'Reaching the maximum limit'));
                         }
                       }
-
                       return IconButton(
                           icon: favoritesStore
                                   .isFavorite(snapshot.data!.elementAt(index))
