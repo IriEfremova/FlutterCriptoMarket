@@ -3,7 +3,7 @@ class AssetsPair implements Comparable<AssetsPair>{
   String name;
 
   //Стоп-цены для мониторинга, минимальная и максимальная граница
-  String realPrice = '';
+  double realPrice = -1;
   double minPrice = -1;
   double maxPrice = -1;
   String piName = '';
@@ -14,20 +14,12 @@ class AssetsPair implements Comparable<AssetsPair>{
 
   AssetsPair.fromDB(this.name, this.piName, this.minPrice, this.maxPrice);
 
-  factory AssetsPair.fromMap(Map<String, dynamic> map) => new AssetsPair.fromDB(
-        map["name"],
-        map["piname"],
-        map["min_price"],
-        map["max_price"],
+  factory AssetsPair.fromMap(Map<String, dynamic> map) => AssetsPair.fromDB(
+        map['name'],
+        map['piname'],
+        map['min_price'],
+        map['max_price'],
       );
-
-  updateMinPrice(double value){
-    minPrice = value;
-  }
-
-  updateMaxPrice(double value){
-    maxPrice = value;
-  }
 
   @override
   bool operator ==(Object other) {
@@ -35,14 +27,15 @@ class AssetsPair implements Comparable<AssetsPair>{
       return true;
     }
     return other is AssetsPair &&
-        this.name == other.name;
+        name == other.name;
   }
-
-  @override
-  int get hashCode => super.hashCode;
 
   @override
   int compareTo(AssetsPair other) {
-    return this.name.compareTo(other.name);
+    return name.compareTo(other.name);
   }
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => super.hashCode;
 }

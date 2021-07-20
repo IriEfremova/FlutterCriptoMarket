@@ -19,4 +19,3 @@ AssetsTicker _$AssetsTickerFromJson(Map<String, dynamic> json) {
     json['o'] as String,
   );
 }
-

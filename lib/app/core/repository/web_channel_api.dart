@@ -6,10 +6,10 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 class WebChannelAPI {
   bool _isInitialize = false;
   late WebSocketChannel _channel;
-  List<double> _streamList = <double>[];
+  final List<double> _streamList = <double>[];
 
   final String _uriConnect = 'wss://demo-futures.kraken.com/ws/v1';
-  StreamController<List<double>> _streamController =
+  final StreamController<List<double>> _streamController =
       StreamController.broadcast();
 
   Stream<List<double>> get getDataStream => _streamController.stream;
@@ -40,11 +40,12 @@ class WebChannelAPI {
       }
       _isInitialize = true;
     }, onDone: () {
-      print("Connecting aborted");
+      print('Connecting aborted');
     }, onError: (e) {
       print('Server error: $e');
-      if (e.toString().contains('was not upgrade'))
-        return Future.error("Not websocket");
+      if (e.toString().contains('was not upgrade')) {
+        return Future.error('Not websocket');
+      }
     }, cancelOnError: true);
     return _channel;
   }
@@ -52,17 +53,17 @@ class WebChannelAPI {
   void subscribeTicker(String assetPairs) async {
     final channel = await webChannel;
     channel.sink.add(convert.jsonEncode({
-      "event": "subscribe",
-      "feed": "ticker",
-      "product_ids": [assetPairs]
+      'event': 'subscribe',
+      'feed': 'ticker',
+      'product_ids': [assetPairs]
     }));
   }
 
   void clearSubscribe(String assetPairs) {
     _channel.sink.add(convert.jsonEncode({
-      "event": "unsubscribe",
-      "feed": "ticker",
-      "product_ids": [assetPairs]
+      'event': 'unsubscribe',
+      'feed': 'ticker',
+      'product_ids': [assetPairs]
     }));
   }
 

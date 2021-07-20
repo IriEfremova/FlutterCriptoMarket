@@ -5,16 +5,17 @@ class WebSocketResponse {
     Map<String, dynamic> result = json['result'];
     if (result.containsKey('status')) {
       return 'Status: ${result['status'].toString()}';
-    } else
+    } else {
       return 'n/a';
+    }
   }
 
   Map<String, String> getAssetsPairsPrice(Map<String, dynamic> json) {
     Map<String, dynamic> result = json['result'];
-    var newMap = Map<String, String>();
-    for (int i = 0; i < result.length; i++) {
-      AssetsTicker ticker = AssetsTicker.fromJson(result.values.elementAt(i));
-      newMap['${result.keys.elementAt(i)}'] = ticker.a.first;
+    var newMap = <String, String>{};
+    for (var i = 0; i < result.length; i++) {
+      var ticker = AssetsTicker.fromJson(result.values.elementAt(i));
+      newMap[result.keys.elementAt(i)] = ticker.ask.first;
     }
     return newMap;
   }
@@ -28,7 +29,7 @@ class WebSocketResponse {
 
   Map<String, String> getAssetsInfo(Map<String, dynamic> json) {
     Map<String, dynamic> result = json['result'];
-    var newMap = Map<String, String>();
+    var newMap = <String, String>{};
 
     result.forEach((key, value) {
       newMap[key] = 'PI_${value['altname'].toString()}';

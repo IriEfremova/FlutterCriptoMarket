@@ -11,17 +11,17 @@ abstract class _UserEventsStoreBase with Store {
   final _eventsList = ObservableList<UserEvent>();
 
   List<String> get userEventsList {
-    List<String> list = <String>[];
+    var list = <String>[];
 
-    _eventsList.forEach((element) {
+    for (var element in _eventsList) {
       list.add(
           '${DateTime.fromMillisecondsSinceEpoch(element.dateTime)}: ${element.event}. ${element.nameAssets}');
-    });
+    }
     return list;
   }
 
   int currentTimeInSeconds() {
-    var ms = (new DateTime.now()).millisecondsSinceEpoch;
+    var ms = (DateTime.now()).millisecondsSinceEpoch;
     return ms;
   }
 

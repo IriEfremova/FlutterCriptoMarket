@@ -4,10 +4,10 @@ import 'colors.dart';
 
 final mainThemeData = ThemeData(
     backgroundColor: CustomColors.background,
-    scaffoldBackgroundColor: CustomColors.scaffold_background,
+    scaffoldBackgroundColor: CustomColors.scaffoldBackground,
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: CustomColors.black,
-        unselectedItemColor: CustomColors.border_side,
+        unselectedItemColor: CustomColors.borderSide,
         selectedItemColor: Colors.white
     ),
     appBarTheme: AppBarTheme(

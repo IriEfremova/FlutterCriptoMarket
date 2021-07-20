@@ -15,9 +15,9 @@ class CustomColors {
 
 
   static const headline1 = Colors.white;
-  static const border_side = Colors.white;
+  static const borderSide = Colors.white;
   static const black = Color(0xff15151C);
   static const background = Color(0xff1A1927);
-  static const scaffold_background = Colors.black;
+  static const scaffoldBackground = Colors.black;
 
 }

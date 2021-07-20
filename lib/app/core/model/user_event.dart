@@ -1,18 +1,17 @@
+import 'package:flutter/cupertino.dart';
+
+@immutable
 class UserEvent {
   //Наименование валюты
-  String _nameAssets;
-  int _dateTime;
-  String _event;
+  final String nameAssets;
+  final int dateTime;
+  final String event;
 
-  String get nameAssets => _nameAssets;
-  int get dateTime => _dateTime;
-  String get event => _event;
+  UserEvent(this.nameAssets, this.dateTime, this.event);
 
-  UserEvent(this._nameAssets, this._dateTime, this._event);
-
-  factory UserEvent.fromMap(Map<String, dynamic> map) => new UserEvent(
-    map["nameassets"],
-    map["datetime"],
-    map["event"],
+  factory UserEvent.fromMap(Map<String, dynamic> map) => UserEvent(
+    map['nameassets'],
+    map['datetime'],
+    map['event'],
   );
 }

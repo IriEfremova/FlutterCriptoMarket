@@ -1,0 +1,2 @@
+//include: package:pedantic/analysis_options.yaml
+include: package:lints/recommended.yaml

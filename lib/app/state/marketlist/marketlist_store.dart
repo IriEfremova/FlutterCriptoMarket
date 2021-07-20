@@ -15,16 +15,15 @@ abstract class _MarketListStoreBase with Store {
   final _searchText = Observable('');
 
   _MarketListStoreBase(this._webService) {
-    StreamController.broadcast();
     _controller = StreamController<List<AssetsPair>>.broadcast(
         onListen: startTimer, onCancel: stopTimer);
   }
 
   Future<void> tick(_) async {
     final map = await _webService.fetchTradePairsPrice();
-    if (_searchText.value.isEmpty)
+    if (_searchText.value.isEmpty) {
       _controller.add(map);
-    else {
+    } else {
       var newList = <AssetsPair>[];
       newList = List.from(map.where((element) =>
           element.name.contains(_searchText.value.toUpperCase())));
@@ -48,7 +47,7 @@ abstract class _MarketListStoreBase with Store {
 
   Stream<List<AssetsPair>> get filteredList => _controller.stream;
 
-  disposeMarketStore() {
+  void disposeMarketStore() {
     _timer?.cancel();
     _controller.close();
   }

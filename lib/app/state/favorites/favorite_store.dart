@@ -7,8 +7,9 @@ class FavoritesStore {
   final _favoritesList = ObservableList<AssetsPair>();
   late AssetsPair _currentAssetsPair;
 
-  get favoritesList => _favoritesList;
-  get assetsPair => _currentAssetsPair;
+  ObservableList<AssetsPair> get favoritesList => _favoritesList;
+
+  AssetsPair get assetsPair => _currentAssetsPair;
 
   void choseAssetsPair(AssetsPair value) {
     _currentAssetsPair = value;
@@ -16,44 +17,62 @@ class FavoritesStore {
 
   FavoritesStore(this._databaseInstance) {
     _loadFavoritesList();
-
   }
 
-  void _loadFavoritesList() async {
+  Future<void> _loadFavoritesList() async {
     final listFromDB = await _databaseInstance.getAllAssetsPairs();
     _favoritesList.addAll(listFromDB);
     _favoritesList.sort();
   }
-  
 
-  @action
-  void addToFavorites(AssetsPair assetsPair) {
-    _favoritesList.add(assetsPair);
-    _databaseInstance.insertAssetsPairInfo(assetsPair);
+  bool checkMinBorderPrice(AssetsPair assetsPair) {
+    if (assetsPair.minPrice == -1) return false;
+    if (assetsPair.realPrice <= assetsPair.minPrice) {
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 
-  @action
-  void removeFromFavorites(AssetsPair assetsPair) {
-    _favoritesList.remove(assetsPair);
-    _databaseInstance.deleteAssetsPair(assetsPair);
+  bool checkMaxBorderPrice(AssetsPair assetsPair) {
+    if (assetsPair.maxPrice == -1) return false;
+    if (assetsPair.realPrice >= assetsPair.maxPrice) {
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 
-  @action
-  void updateFavoritesMinPrice(AssetsPair assetsPair) {
-    _databaseInstance.updateAssetsPairMinPrice(assetsPair);
-    _favoritesList.remove(assetsPair);
-    _favoritesList.add(assetsPair);
-    _favoritesList.sort();
-  }
+@action
+void addToFavorites(AssetsPair assetsPair) {
+  _favoritesList.add(assetsPair);
+  _databaseInstance.insertAssetsPairInfo(assetsPair);
+}
 
-  @action
-  void updateFavoritesMaxPrice(AssetsPair assetsPair) {
-    _databaseInstance.updateAssetsPairMaxPrice(assetsPair);
-    _favoritesList.remove(assetsPair);
-    _favoritesList.add(assetsPair);
-    _favoritesList.sort();
-  }
+@action
+void removeFromFavorites(AssetsPair assetsPair) {
+  _favoritesList.remove(assetsPair);
+  _databaseInstance.deleteAssetsPair(assetsPair);
+}
 
-  bool isFavorite(AssetsPair assetsPair) => _favoritesList.contains(assetsPair);
+@action
+void updateFavoritesMinPrice(AssetsPair assetsPair) {
+  _databaseInstance.updateAssetsPairMinPrice(assetsPair);
+  _favoritesList.remove(assetsPair);
+  _favoritesList.add(assetsPair);
+  _favoritesList.sort();
+}
+
+@action
+void updateFavoritesMaxPrice(AssetsPair assetsPair) {
+  _databaseInstance.updateAssetsPairMaxPrice(assetsPair);
+  _favoritesList.remove(assetsPair);
+  _favoritesList.add(assetsPair);
+  _favoritesList.sort();
+}
+
+bool isFavorite(AssetsPair assetsPair) => _favoritesList.contains(assetsPair);
 
 }

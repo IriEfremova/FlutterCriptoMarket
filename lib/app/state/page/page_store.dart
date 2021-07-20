@@ -9,7 +9,7 @@ abstract class _PageStoreBase with Store {
 
   final _currentPage = Observable(0);
 
-  get currentPage => _currentPage.value;
+  int get currentPage => _currentPage.value;
 
   @action
   void setCurrentPage(int value) {

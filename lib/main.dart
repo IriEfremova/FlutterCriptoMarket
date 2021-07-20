@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:cripto_market/app/core/repository/web_service_api.dart';
 import 'package:cripto_market/app/state/marketlist/marketlist_store.dart';
 import 'package:cripto_market/app/state/userevents/userevents_store.dart';
@@ -12,14 +11,20 @@ import 'app/state/favorites/favorite_store.dart';
 import 'app/state/page/page_store.dart';
 import 'app/state/rssnews/rss_store.dart';
 import 'app/ui/style/theme.dart';
+import 'package:http/http.dart' as http;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   mainContext.config = ReactiveConfig.main.clone(
     writePolicy: ReactiveWritePolicy.always,
   );
+  await databaseInstance.initDB();
   runApp(App());
 }
+
+http.Client httpClient = http.Client();
+final webService = WebServiceAPI(httpClient);
+final DatabaseInstance databaseInstance = DatabaseInstance();
 
 class App extends StatelessWidget {
   @override
@@ -27,42 +32,34 @@ class App extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider(
-          create: (context) => WebServiceAPI(),
-        ),
-        Provider(
           create: (context) => WebChannelAPI(),
           dispose: (BuildContext context, WebChannelAPI value) =>
               value.disposeSocket(),
         ),
         Provider(
-          create: (context) => DatabaseInstance(),
-          dispose: (BuildContext context, DatabaseInstance value) =>
-              value.closeDatabase(),
-        ),
-        Provider(
-          create: (context) => FavoritesStore(context.read<DatabaseInstance>()),
+          create: (context) => FavoritesStore(databaseInstance),
         ),
         Provider(
           create: (context) =>
-              UserEventsStore(context.read<DatabaseInstance>()),
+              UserEventsStore(databaseInstance),
         ),
         Provider(
           create: (context) => PageStore(),
         ),
         Provider(
-          create: (context) => RssStore(),
+          create: (context) => RssStore(httpClient),
           dispose: (BuildContext context, RssStore value) =>
               value.disposeRssNews(),
         ),
         Provider(
-          create: (context) => MarketListStore(context.read<WebServiceAPI>()),
+          create: (context) => MarketListStore(webService),
           dispose: (BuildContext context, MarketListStore value) =>
               value.disposeMarketStore(),
         ),
       ],
       child: MaterialApp(
         theme: mainThemeData,
-        home: MainPage(),
+        home: MainPage(webService),
       ),
     );
   }

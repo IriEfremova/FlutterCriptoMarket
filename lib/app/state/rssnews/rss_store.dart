@@ -2,23 +2,32 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
 
-import 'package:cripto_market/app/core/repository/rss_servise.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart';
 
+@immutable
+class RssMessage{
+  final String title;
+  final String description;
+
+  RssMessage(this.title, this.description);
+}
+
 class RssStore {
+  http.Client client;
   late Isolate _rssIsolate;
   late ReceivePort _isolateReceivePort;
 
   final _rssNewsList = ObservableList<RssMessage>();
   late Timer _timer;
 
-  get rssNewsList => _rssNewsList;
+  ObservableList<RssMessage> get rssNewsList => _rssNewsList;
 
-  RssStore() {
+  RssStore(this.client) {
     spawnRssIsolate();
-    _timer = Timer.periodic(Duration(minutes: 1), (t) async {
+    _timer = Timer.periodic(Duration(minutes: 1), (t) {
       spawnRssIsolate();
     });
   }
@@ -56,7 +65,7 @@ class RssStore {
     }
   }
 
-  disposeRssNews() {
+  void disposeRssNews() {
     _timer.cancel();
   }
 }
